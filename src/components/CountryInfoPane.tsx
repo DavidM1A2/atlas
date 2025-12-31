@@ -39,14 +39,28 @@ export default function CountryInfoPane({
 
             <div className={styles.content}>
                 <div className={styles.infoGroup}>
-                    <span className={styles.infoLabel}>Country Code</span>
-                    <p className={styles.infoValue}>{country.code}</p>
-                </div>
-                <div className={styles.infoGroup}>
                     <span className={styles.infoLabel}>Population</span>
                     <p className={styles.infoValue}>
                         {country.population.toLocaleString()}
                     </p>
+                </div>
+                <div className={styles.infoGroup}>
+                    <span className={styles.infoLabel}>GDP</span>
+                    <p className={styles.infoValue}>
+                        ${(country.gdp / 1e9).toFixed(1)}B
+                    </p>
+                </div>
+                <div className={styles.infoGroup}>
+                    <span className={styles.infoLabel}>Poverty Rate</span>
+                    <p className={styles.infoValue}>{country.povertyRate}%</p>
+                </div>
+                <div className={styles.infoGroup}>
+                    <span className={styles.infoLabel}>People Groups</span>
+                    <p className={styles.infoValue}>{country.peopleGroups}</p>
+                </div>
+                <div className={styles.infoGroup}>
+                    <span className={styles.infoLabel}>Christian Population</span>
+                    <p className={styles.infoValue}>{country.christianPercent}%</p>
                 </div>
             </div>
         </div>

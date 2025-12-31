@@ -71,8 +71,11 @@ export default function WorldMap({ selectedCountry, onCountrySelect }: WorldMapP
 
         onCountrySelect({
             name: layer.countryName,
-            code: layer.countryCode,
-            population: 10000, // Hardcoded for now
+            population: 10000000,
+            gdp: 500000000000,
+            povertyRate: 12.5,
+            peopleGroups: 45,
+            christianPercent: 65.2,
         });
     };
 

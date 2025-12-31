@@ -2,8 +2,11 @@ import type { Feature, Geometry } from 'geojson';
 
 export interface Country {
     name: string;
-    code: string;
     population: number;
+    gdp: number;
+    povertyRate: number;
+    peopleGroups: number;
+    christianPercent: number;
 }
 
 export interface CountryProperties {
