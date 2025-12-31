@@ -1,9 +1,118 @@
 'use client';
 
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
+import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import type { Path } from 'leaflet';
+import type { FeatureCollection, Geometry } from 'geojson';
+import type { Country, CountryProperties } from '@/types/country';
+import countriesData from '@/data/countries.json';
 import 'leaflet/dist/leaflet.css';
 
-export default function WorldMap() {
+interface WorldMapProps {
+    selectedCountry: Country | null;
+    onCountrySelect: (country: Country) => void;
+}
+
+const defaultStyle = {
+    fillColor: '#3388ff',
+    weight: 1,
+    opacity: 0.6,
+    color: '#ffffff',
+    fillOpacity: 0.2,
+};
+
+const hoverStyle = {
+    fillColor: '#3388ff',
+    weight: 2,
+    opacity: 1,
+    color: '#ffffff',
+    fillOpacity: 0.4,
+};
+
+const selectedStyle = {
+    fillColor: '#ff7800',
+    weight: 2,
+    opacity: 1,
+    color: '#ffffff',
+    fillOpacity: 0.5,
+};
+
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+
+interface LayerWithCountry extends Path {
+    countryCode: string;
+    countryName: string;
+}
+
+export default function WorldMap({ selectedCountry, onCountrySelect }: WorldMapProps) {
+    const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+    const selectedLayerRef = useRef<LayerWithCountry | null>(null);
+    const layerMapRef = useRef<Map<string, LayerWithCountry>>(new Map());
+
+    // Clear highlight when selection is cleared externally (e.g., pane closed)
+    useEffect(() => {
+        if (!selectedCountry && selectedLayerRef.current) {
+            selectedLayerRef.current.setStyle(defaultStyle);
+            selectedLayerRef.current = null;
+        }
+    }, [selectedCountry]);
+
+    const handleLayerClick = (layer: LayerWithCountry) => {
+        // Reset previous selection
+        if (selectedLayerRef.current && selectedLayerRef.current !== layer) {
+            selectedLayerRef.current.setStyle(defaultStyle);
+        }
+
+        // Apply selected style to new layer
+        layer.setStyle(selectedStyle);
+        selectedLayerRef.current = layer;
+
+        onCountrySelect({
+            name: layer.countryName,
+            code: layer.countryCode,
+            population: 10000, // Hardcoded for now
+        });
+    };
+
+    const onEachFeature = (
+        feature: GeoJSON.Feature<Geometry, CountryProperties>,
+        layer: Path
+    ) => {
+        const props = feature.properties;
+        const countryName = props?.name || 'Unknown';
+        const countryCode = props?.['ISO3166-1-Alpha-3'] || '';
+
+        // Extend layer with country info
+        const extendedLayer = layer as LayerWithCountry;
+        extendedLayer.countryCode = countryCode;
+        extendedLayer.countryName = countryName;
+
+        // Store in map for external access
+        if (countryCode) {
+            layerMapRef.current.set(countryCode, extendedLayer);
+        }
+
+        layer.on({
+            mouseover: () => {
+                if (selectedLayerRef.current !== layer) {
+                    layer.setStyle(hoverStyle);
+                }
+            },
+            mouseout: () => {
+                if (selectedLayerRef.current !== layer) {
+                    layer.setStyle(defaultStyle);
+                }
+            },
+            click: () => {
+                handleLayerClick(extendedLayer);
+            },
+        });
+    };
+
+    if (!mounted) return null;
+
     return (
         <MapContainer
             center={[20, 0]}
@@ -15,6 +124,11 @@ export default function WorldMap() {
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <GeoJSON
+                data={countriesData as FeatureCollection<Geometry, CountryProperties>}
+                style={defaultStyle}
+                onEachFeature={onEachFeature}
             />
         </MapContainer>
     );
