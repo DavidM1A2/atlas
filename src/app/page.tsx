@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import type { Country } from '@/types/country';
 import CountryInfoPane from '@/components/CountryInfoPane';
@@ -13,7 +13,18 @@ const WorldMap = dynamic(() => import('@/components/WorldMap'), {
 
 export default function Home() {
     const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-    const [selectedTileId, setSelectedTileId] = useState('voyager');
+    const [selectedTileId, setSelectedTileId] = useState('osm');
+
+    useEffect(() => {
+        const saved = localStorage.getItem('selectedTileId');
+        if (saved) {
+            setSelectedTileId(saved);
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('selectedTileId', selectedTileId);
+    }, [selectedTileId]);
 
     const selectedTile = tileOptions.find((t) => t.id === selectedTileId) || tileOptions[0];
 
