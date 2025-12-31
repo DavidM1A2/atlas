@@ -5,7 +5,9 @@ import { MapContainer, TileLayer, GeoJSON, ZoomControl } from 'react-leaflet';
 import type { Path } from 'leaflet';
 import type { FeatureCollection, Geometry } from 'geojson';
 import type { Country, CountryProperties } from '@/types/country';
+import type { LanguageGroup } from '@/types/languageGroup';
 import countriesData from '@/data/countries.json';
+import LanguageMarkers from './LanguageMarkers';
 import 'leaflet/dist/leaflet.css';
 
 interface WorldMapProps {
@@ -13,6 +15,9 @@ interface WorldMapProps {
     onCountrySelect: (country: Country) => void;
     tileUrl: string;
     tileAttribution: string;
+    languageGroups: LanguageGroup[];
+    selectedLanguageGroupId: string | null;
+    onLanguageGroupSelect: (languageGroup: LanguageGroup) => void;
 }
 
 const defaultStyle = {
@@ -48,7 +53,15 @@ interface LayerWithCountry extends Path {
     countryName: string;
 }
 
-export default function WorldMap({ selectedCountry, onCountrySelect, tileUrl, tileAttribution }: WorldMapProps) {
+export default function WorldMap({
+    selectedCountry,
+    onCountrySelect,
+    tileUrl,
+    tileAttribution,
+    languageGroups,
+    selectedLanguageGroupId,
+    onLanguageGroupSelect,
+}: WorldMapProps) {
     const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
     const selectedLayerRef = useRef<LayerWithCountry | null>(null);
     const layerMapRef = useRef<Map<string, LayerWithCountry>>(new Map());
@@ -137,6 +150,11 @@ export default function WorldMap({ selectedCountry, onCountrySelect, tileUrl, ti
                 data={countriesData as FeatureCollection<Geometry, CountryProperties>}
                 style={defaultStyle}
                 onEachFeature={onEachFeature}
+            />
+            <LanguageMarkers
+                languageGroups={languageGroups}
+                selectedId={selectedLanguageGroupId}
+                onMarkerClick={onLanguageGroupSelect}
             />
         </MapContainer>
     );

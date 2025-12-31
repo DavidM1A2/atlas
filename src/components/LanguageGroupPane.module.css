@@ -1,0 +1,242 @@
+.pane {
+    position: fixed;
+    right: 16px;
+    top: 16px;
+    width: 360px;
+    max-height: calc(100vh - 32px);
+    background-color: white;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid #f3f4f6;
+    flex-shrink: 0;
+}
+
+.title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.closeButton {
+    padding: 6px;
+    color: #6b7280;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.closeButton:hover {
+    color: #374151;
+    background-color: #f3f4f6;
+}
+
+.closeButton svg {
+    width: 20px;
+    height: 20px;
+}
+
+.tabs {
+    display: flex;
+    gap: 2px;
+    padding: 8px 12px;
+    border-bottom: 1px solid #f3f4f6;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.tab {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6b7280;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.tab:hover {
+    color: #374151;
+    background-color: #f3f4f6;
+}
+
+.tabActive {
+    color: #3b82f6;
+    background-color: #eff6ff;
+}
+
+.content {
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.section {
+    margin-bottom: 16px;
+}
+
+.section:last-child {
+    margin-bottom: 0;
+}
+
+.sectionTitle {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+
+.tagList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    background-color: #f3f4f6;
+    color: #374151;
+    border-radius: 4px;
+}
+
+.linkList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.link {
+    color: #3b82f6;
+    text-decoration: none;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.link svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.noteCard {
+    padding: 12px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.noteCard:last-child {
+    margin-bottom: 0;
+}
+
+.noteMeta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.noteContent {
+    font-size: 0.875rem;
+    color: #374151;
+    line-height: 1.5;
+}
+
+.editIndicator {
+    padding: 8px 16px;
+    background-color: #fef3c7;
+    color: #92400e;
+    font-size: 0.75rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.emptyState {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    font-style: italic;
+}
+
+.riskBadge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 9999px;
+}
+
+.riskLow {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.riskModerate {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.riskHigh {
+    background-color: #fed7aa;
+    color: #9a3412;
+}
+
+.riskCritical {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.churchBadge {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 9999px;
+}
+
+.churchNone {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.churchEmerging {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.churchGrowing {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.churchHealthy {
+    background-color: #c7d2fe;
+    color: #3730a3;
+}

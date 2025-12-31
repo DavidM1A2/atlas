@@ -2,21 +2,23 @@
 
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import type { User, AuthContextType } from '@/types/auth';
+import { testUsers } from '@/data/users';
 
 const AuthContext = createContext<AuthContextType | null>(null);
-
-const TEST_USER = {
-    username: 'username',
-    password: 'password',
-    role: 'Admin' as const,
-};
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
 
     const login = useCallback((username: string, password: string): boolean => {
-        if (username === TEST_USER.username && password === TEST_USER.password) {
-            setUser({ username, role: TEST_USER.role });
+        const matchedUser = testUsers.find(
+            (u) => u.username === username && u.password === password
+        );
+        if (matchedUser) {
+            setUser({
+                username: matchedUser.username,
+                role: matchedUser.role,
+                assignedCountries: matchedUser.assignedCountries,
+            });
             return true;
         }
         return false;
