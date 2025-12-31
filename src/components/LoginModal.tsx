@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import styles from './LoginModal.module.css';
 
 interface LoginModalProps {
     onClose: () => void;
@@ -26,13 +27,13 @@ export default function LoginModal({ onClose }: LoginModalProps) {
     };
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-container">
-                <div className="modal-header">
-                    <h2>Login</h2>
+        <div className={styles.overlay}>
+            <div className={styles.container}>
+                <div className={styles.header}>
+                    <h2 className={styles.title}>Login</h2>
                     <button
                         onClick={onClose}
-                        className="close-button"
+                        className={styles.closeButton}
                         title="Close"
                     >
                         <svg
@@ -51,10 +52,10 @@ export default function LoginModal({ onClose }: LoginModalProps) {
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="modal-form">
-                    {error && <div className="error-message">{error}</div>}
+                <form onSubmit={handleSubmit} className={styles.form}>
+                    {error && <div className={styles.error}>{error}</div>}
 
-                    <div className="form-group">
+                    <div className={styles.formGroup}>
                         <label htmlFor="username">Username</label>
                         <input
                             id="username"
@@ -65,7 +66,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className={styles.formGroup}>
                         <label htmlFor="password">Password</label>
                         <input
                             id="password"
@@ -76,7 +77,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
                         />
                     </div>
 
-                    <button type="submit" className="submit-button">
+                    <button type="submit" className={styles.submitButton}>
                         Login
                     </button>
                 </form>

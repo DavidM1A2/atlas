@@ -1,6 +1,7 @@
 'use client';
 
 import type { Country } from '@/types/country';
+import styles from './CountryInfoPane.module.css';
 
 interface CountryInfoPaneProps {
     country: Country;
@@ -12,12 +13,12 @@ export default function CountryInfoPane({
     onClose,
 }: CountryInfoPaneProps) {
     return (
-        <div className="country-pane">
-            <div className="country-pane-header">
-                <h2>{country.name}</h2>
+        <div className={styles.pane}>
+            <div className={styles.header}>
+                <h2 className={styles.title}>{country.name}</h2>
                 <button
                     onClick={onClose}
-                    className="close-button"
+                    className={styles.closeButton}
                     title="Close"
                 >
                     <svg
@@ -36,14 +37,14 @@ export default function CountryInfoPane({
                 </button>
             </div>
 
-            <div className="country-pane-content">
-                <div className="info-group">
-                    <span className="info-label">Country Code</span>
-                    <p className="info-value">{country.code}</p>
+            <div className={styles.content}>
+                <div className={styles.infoGroup}>
+                    <span className={styles.infoLabel}>Country Code</span>
+                    <p className={styles.infoValue}>{country.code}</p>
                 </div>
-                <div className="info-group">
-                    <span className="info-label">Population</span>
-                    <p className="info-value">
+                <div className={styles.infoGroup}>
+                    <span className={styles.infoLabel}>Population</span>
+                    <p className={styles.infoValue}>
                         {country.population.toLocaleString()}
                     </p>
                 </div>

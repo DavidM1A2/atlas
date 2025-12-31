@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import LoginModal from './LoginModal';
+import styles from './AuthHeader.module.css';
 
 export default function AuthHeader() {
     const { user, logout } = useAuth();
@@ -10,21 +11,21 @@ export default function AuthHeader() {
 
     return (
         <>
-            <div className="auth-header">
+            <div className={styles.header}>
                 {user ? (
                     <>
-                        <div className="user-badge">
-                            <span className="username">{user.username}</span>
-                            <span className="role">{user.role}</span>
+                        <div className={styles.userBadge}>
+                            <span className={styles.username}>{user.username}</span>
+                            <span className={styles.role}>{user.role}</span>
                         </div>
-                        <button onClick={logout} className="auth-button">
+                        <button onClick={logout} className={styles.button}>
                             Logout
                         </button>
                     </>
                 ) : (
                     <button
                         onClick={() => setShowLoginModal(true)}
-                        className="auth-button"
+                        className={styles.button}
                     >
                         Login
                     </button>
