@@ -13,6 +13,7 @@ import {
     HOVER_COUNTRY_STYLE,
     SELECTED_COUNTRY_STYLE,
 } from '@/utils/mapStyles';
+import { getCountryByName } from '@/utils/backendService';
 import 'leaflet/dist/leaflet.css';
 
 interface WorldMapProps {
@@ -65,14 +66,17 @@ export default function WorldMap({
         layer.setStyle(SELECTED_COUNTRY_STYLE);
         selectedLayerRef.current = layer;
 
-        onCountrySelect({
-            name: layer.countryName,
-            population: 10000000,
-            gdp: 500000000000,
-            povertyRate: 12.5,
-            peopleGroups: 45,
-            christianPercent: 65.2,
-        });
+        const countryData = getCountryByName(layer.countryName);
+        onCountrySelect(
+            countryData ?? {
+                name: layer.countryName,
+                population: 0,
+                gdp: 0,
+                povertyRate: 0,
+                peopleGroups: 0,
+                christianPercent: 0,
+            }
+        );
     };
 
     const onEachFeature = (

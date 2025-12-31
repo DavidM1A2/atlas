@@ -9,8 +9,11 @@ import {
     ReactNode,
 } from 'react';
 import type { LanguageGroup } from '@/types/languageGroup';
-import { mockLanguageGroups } from '@/data/languageGroups';
-import { enrichLanguageGroupsWithCountry } from '@/utils/countryDetection';
+import {
+    getAllLanguageGroups,
+    getLanguageGroupById,
+    applyLanguageGroupEdits,
+} from '@/utils/backendService';
 
 type LanguageGroupEdits = {
     [languageGroupId: string]: Partial<LanguageGroup>;
@@ -27,9 +30,8 @@ interface LanguageGroupContextType {
 const LanguageGroupContext = createContext<LanguageGroupContextType | null>(null);
 
 export function LanguageGroupProvider({ children }: { children: ReactNode }) {
-    // Enrich with country codes on initial load
     const [languageGroups] = useState<LanguageGroup[]>(() =>
-        enrichLanguageGroupsWithCountry(mockLanguageGroups)
+        getAllLanguageGroups()
     );
 
     const [edits, setEdits] = useState<LanguageGroupEdits>({});
@@ -46,15 +48,15 @@ export function LanguageGroupProvider({ children }: { children: ReactNode }) {
 
     const getLanguageGroupWithEdits = useCallback(
         (id: string): LanguageGroup | undefined => {
-            const base = languageGroups.find((lg) => lg.id === id);
+            const base = getLanguageGroupById(id);
             if (!base) return undefined;
 
             const groupEdits = edits[id];
             if (!groupEdits) return base;
 
-            return { ...base, ...groupEdits };
+            return applyLanguageGroupEdits(base, groupEdits);
         },
-        [languageGroups, edits]
+        [edits]
     );
 
     const clearEdits = useCallback(() => {

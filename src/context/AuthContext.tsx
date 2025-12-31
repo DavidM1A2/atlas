@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import type { User, AuthContextType } from '@/types/auth';
-import { testUsers } from '@/data/users';
+import { authenticateUser } from '@/utils/backendService';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -10,15 +10,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
 
     const login = useCallback((username: string, password: string): boolean => {
-        const matchedUser = testUsers.find(
-            (u) => u.username === username && u.password === password
-        );
-        if (matchedUser) {
-            setUser({
-                username: matchedUser.username,
-                role: matchedUser.role,
-                assignedCountries: matchedUser.assignedCountries,
-            });
+        const authenticatedUser = authenticateUser(username, password);
+        if (authenticatedUser) {
+            setUser(authenticatedUser);
             return true;
         }
         return false;
