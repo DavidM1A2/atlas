@@ -8,7 +8,8 @@ import { useLanguageGroups } from '@/context/LanguageGroupContext';
 import CountryInfoPane from '@/components/CountryInfoPane';
 import LanguageGroupPane from '@/components/LanguageGroupPane';
 import AuthHeader from '@/components/AuthHeader';
-import TileSelector, { tileOptions } from '@/components/TileSelector';
+import TileSelector from '@/components/TileSelector';
+import { tileOptions } from '@/data/tiles';
 
 const WorldMap = dynamic(() => import('@/components/WorldMap'), {
     ssr: false,

@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import CloseButton from './CloseButton';
 import styles from './LoginModal.module.css';
 
 interface LoginModalProps {
@@ -31,25 +32,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
             <div className={styles.container}>
                 <div className={styles.header}>
                     <h2 className={styles.title}>Login</h2>
-                    <button
-                        onClick={onClose}
-                        className={styles.closeButton}
-                        title="Close"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M6 18L18 6M6 6l12 12"
-                            />
-                        </svg>
-                    </button>
+                    <CloseButton onClick={onClose} />
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.form}>

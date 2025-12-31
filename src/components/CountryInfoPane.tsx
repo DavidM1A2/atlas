@@ -1,6 +1,8 @@
 'use client';
 
 import type { Country } from '@/types/country';
+import CloseButton from './CloseButton';
+import { formatPopulation, formatGDP, formatPercent } from '@/utils/formatters';
 import styles from './CountryInfoPane.module.css';
 
 interface CountryInfoPaneProps {
@@ -16,43 +18,25 @@ export default function CountryInfoPane({
         <div className={styles.pane}>
             <div className={styles.header}>
                 <h2 className={styles.title}>{country.name}</h2>
-                <button
-                    onClick={onClose}
-                    className={styles.closeButton}
-                    title="Close"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                        />
-                    </svg>
-                </button>
+                <CloseButton onClick={onClose} />
             </div>
 
             <div className={styles.content}>
                 <div className={styles.infoGroup}>
                     <span className={styles.infoLabel}>Population</span>
                     <p className={styles.infoValue}>
-                        {country.population.toLocaleString()}
+                        {formatPopulation(country.population)}
                     </p>
                 </div>
                 <div className={styles.infoGroup}>
                     <span className={styles.infoLabel}>GDP</span>
                     <p className={styles.infoValue}>
-                        ${(country.gdp / 1e9).toFixed(1)}B
+                        {formatGDP(country.gdp)}
                     </p>
                 </div>
                 <div className={styles.infoGroup}>
                     <span className={styles.infoLabel}>Poverty Rate</span>
-                    <p className={styles.infoValue}>{country.povertyRate}%</p>
+                    <p className={styles.infoValue}>{formatPercent(country.povertyRate)}</p>
                 </div>
                 <div className={styles.infoGroup}>
                     <span className={styles.infoLabel}>People Groups</span>
@@ -60,7 +44,7 @@ export default function CountryInfoPane({
                 </div>
                 <div className={styles.infoGroup}>
                     <span className={styles.infoLabel}>Christian Population</span>
-                    <p className={styles.infoValue}>{country.christianPercent}%</p>
+                    <p className={styles.infoValue}>{formatPercent(country.christianPercent)}</p>
                 </div>
             </div>
         </div>

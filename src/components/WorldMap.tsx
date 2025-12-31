@@ -8,6 +8,11 @@ import type { Country, CountryProperties } from '@/types/country';
 import type { LanguageGroup } from '@/types/languageGroup';
 import countriesData from '@/data/countries.json';
 import LanguageMarkers from './LanguageMarkers';
+import {
+    DEFAULT_COUNTRY_STYLE,
+    HOVER_COUNTRY_STYLE,
+    SELECTED_COUNTRY_STYLE,
+} from '@/utils/mapStyles';
 import 'leaflet/dist/leaflet.css';
 
 interface WorldMapProps {
@@ -19,30 +24,6 @@ interface WorldMapProps {
     selectedLanguageGroupId: string | null;
     onLanguageGroupSelect: (languageGroup: LanguageGroup) => void;
 }
-
-const defaultStyle = {
-    fillColor: 'transparent',
-    weight: 1,
-    opacity: 0.3,
-    color: '#666666',
-    fillOpacity: 0,
-};
-
-const hoverStyle = {
-    fillColor: 'transparent',
-    weight: 3,
-    opacity: 1,
-    color: '#3388ff',
-    fillOpacity: 0,
-};
-
-const selectedStyle = {
-    fillColor: 'transparent',
-    weight: 3,
-    opacity: 1,
-    color: '#ff7800',
-    fillOpacity: 0,
-};
 
 const subscribe = () => () => {};
 const getSnapshot = () => true;
@@ -69,7 +50,7 @@ export default function WorldMap({
     // Clear highlight when selection is cleared externally (e.g., pane closed)
     useEffect(() => {
         if (!selectedCountry && selectedLayerRef.current) {
-            selectedLayerRef.current.setStyle(defaultStyle);
+            selectedLayerRef.current.setStyle(DEFAULT_COUNTRY_STYLE);
             selectedLayerRef.current = null;
         }
     }, [selectedCountry]);
@@ -77,11 +58,11 @@ export default function WorldMap({
     const handleLayerClick = (layer: LayerWithCountry) => {
         // Reset previous selection
         if (selectedLayerRef.current && selectedLayerRef.current !== layer) {
-            selectedLayerRef.current.setStyle(defaultStyle);
+            selectedLayerRef.current.setStyle(DEFAULT_COUNTRY_STYLE);
         }
 
         // Apply selected style to new layer
-        layer.setStyle(selectedStyle);
+        layer.setStyle(SELECTED_COUNTRY_STYLE);
         selectedLayerRef.current = layer;
 
         onCountrySelect({
@@ -115,12 +96,12 @@ export default function WorldMap({
         layer.on({
             mouseover: () => {
                 if (selectedLayerRef.current !== layer) {
-                    layer.setStyle(hoverStyle);
+                    layer.setStyle(HOVER_COUNTRY_STYLE);
                 }
             },
             mouseout: () => {
                 if (selectedLayerRef.current !== layer) {
-                    layer.setStyle(defaultStyle);
+                    layer.setStyle(DEFAULT_COUNTRY_STYLE);
                 }
             },
             click: () => {
@@ -148,7 +129,7 @@ export default function WorldMap({
             />
             <GeoJSON
                 data={countriesData as FeatureCollection<Geometry, CountryProperties>}
-                style={defaultStyle}
+                style={DEFAULT_COUNTRY_STYLE}
                 onEachFeature={onEachFeature}
             />
             <LanguageMarkers

@@ -16,14 +16,16 @@ export interface AlternativeNames {
     dialects: string[];
 }
 
-export type LanguageShiftRisk = 'Low' | 'Moderate' | 'High' | 'Critical';
+export const LANGUAGE_SHIFT_RISKS = ['Low', 'Moderate', 'High', 'Critical'] as const;
+export type LanguageShiftRisk = (typeof LANGUAGE_SHIFT_RISKS)[number];
 
 export interface Vitality {
     percentMonolingual: number;
     languageShiftRisk: LanguageShiftRisk;
 }
 
-export type ChurchPresence = 'None' | 'Emerging' | 'Growing' | 'Healthy Indigenous-Led';
+export const CHURCH_PRESENCE_OPTIONS = ['None', 'Emerging', 'Growing', 'Healthy Indigenous-Led'] as const;
+export type ChurchPresence = (typeof CHURCH_PRESENCE_OPTIONS)[number];
 
 export interface ResourceLink {
     label: string;
