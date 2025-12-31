@@ -10,26 +10,21 @@ export default function AuthHeader() {
 
     return (
         <>
-            <div className="fixed left-4 top-4 z-[1000] flex items-center gap-3">
+            <div className="auth-header">
                 {user ? (
                     <>
-                        <div className="bg-white shadow-lg rounded-lg px-3 py-2 flex items-center gap-2">
-                            <span className="text-gray-800 font-medium">{user.username}</span>
-                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
-                                {user.role}
-                            </span>
+                        <div className="user-badge">
+                            <span className="username">{user.username}</span>
+                            <span className="role">{user.role}</span>
                         </div>
-                        <button
-                            onClick={logout}
-                            className="bg-white shadow-lg rounded-lg px-4 py-2 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
-                        >
+                        <button onClick={logout} className="auth-button">
                             Logout
                         </button>
                     </>
                 ) : (
                     <button
                         onClick={() => setShowLoginModal(true)}
-                        className="bg-white shadow-lg rounded-lg px-4 py-2 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                        className="auth-button"
                     >
                         Login
                     </button>

@@ -26,19 +26,17 @@ export default function LoginModal({ onClose }: LoginModalProps) {
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[2000]">
-            <div className="w-80 bg-white shadow-xl rounded-xl overflow-hidden">
-                {/* Header */}
-                <div className="flex items-center justify-between p-4 border-b border-gray-100">
-                    <h2 className="text-lg font-semibold text-gray-800">Login</h2>
+        <div className="modal-overlay">
+            <div className="modal-container">
+                <div className="modal-header">
+                    <h2>Login</h2>
                     <button
                         onClick={onClose}
-                        className="p-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                        className="close-button"
                         title="Close"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -53,46 +51,32 @@ export default function LoginModal({ onClose }: LoginModalProps) {
                     </button>
                 </div>
 
-                {/* Form */}
-                <form onSubmit={handleSubmit} className="p-4 space-y-4">
-                    {error && (
-                        <div className="text-sm text-red-600 bg-red-50 p-2 rounded">
-                            {error}
-                        </div>
-                    )}
+                <form onSubmit={handleSubmit} className="modal-form">
+                    {error && <div className="error-message">{error}</div>}
 
-                    <div>
-                        <label htmlFor="username" className="block text-sm text-gray-500 mb-1">
-                            Username
-                        </label>
+                    <div className="form-group">
+                        <label htmlFor="username">Username</label>
                         <input
                             id="username"
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             required
                         />
                     </div>
 
-                    <div>
-                        <label htmlFor="password" className="block text-sm text-gray-500 mb-1">
-                            Password
-                        </label>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
                         <input
                             id="password"
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             required
                         />
                     </div>
 
-                    <button
-                        type="submit"
-                        className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-                    >
+                    <button type="submit" className="submit-button">
                         Login
                     </button>
                 </form>
