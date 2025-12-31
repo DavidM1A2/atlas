@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useSyncExternalStore } from 'react';
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, ZoomControl } from 'react-leaflet';
 import type { Path } from 'leaflet';
 import type { FeatureCollection, Geometry } from 'geojson';
 import type { Country, CountryProperties } from '@/types/country';
@@ -120,7 +120,9 @@ export default function WorldMap({ selectedCountry, onCountrySelect }: WorldMapP
             style={{ height: '100vh', width: '100%' }}
             minZoom={2}
             worldCopyJump={true}
+            zoomControl={false}
         >
+            <ZoomControl position="bottomleft" />
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import type { Country } from '@/types/country';
 import CountryInfoPane from '@/components/CountryInfoPane';
+import AuthHeader from '@/components/AuthHeader';
 
 const WorldMap = dynamic(() => import('@/components/WorldMap'), {
     ssr: false,
@@ -22,6 +23,7 @@ export default function Home() {
 
     return (
         <>
+            <AuthHeader />
             <WorldMap selectedCountry={selectedCountry} onCountrySelect={handleCountrySelect} />
             {selectedCountry && (
                 <CountryInfoPane
