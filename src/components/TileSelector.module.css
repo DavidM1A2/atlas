@@ -1,0 +1,27 @@
+.container {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 1000;
+}
+
+.select {
+    background-color: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #374151;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    outline: none;
+}
+
+.select:hover {
+    background-color: #f9fafb;
+}
+
+.select:focus {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 0 0 2px #3b82f6;
+}

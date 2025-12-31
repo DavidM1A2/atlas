@@ -11,6 +11,8 @@ import 'leaflet/dist/leaflet.css';
 interface WorldMapProps {
     selectedCountry: Country | null;
     onCountrySelect: (country: Country) => void;
+    tileUrl: string;
+    tileAttribution: string;
 }
 
 const defaultStyle = {
@@ -46,7 +48,7 @@ interface LayerWithCountry extends Path {
     countryName: string;
 }
 
-export default function WorldMap({ selectedCountry, onCountrySelect }: WorldMapProps) {
+export default function WorldMap({ selectedCountry, onCountrySelect, tileUrl, tileAttribution }: WorldMapProps) {
     const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
     const selectedLayerRef = useRef<LayerWithCountry | null>(null);
     const layerMapRef = useRef<Map<string, LayerWithCountry>>(new Map());
@@ -127,8 +129,9 @@ export default function WorldMap({ selectedCountry, onCountrySelect }: WorldMapP
         >
             <ZoomControl position="bottomleft" />
             <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                key={tileUrl}
+                url={tileUrl}
+                attribution={tileAttribution}
             />
             <GeoJSON
                 data={countriesData as FeatureCollection<Geometry, CountryProperties>}
