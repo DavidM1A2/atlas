@@ -14,11 +14,11 @@ interface WorldMapProps {
 }
 
 const defaultStyle = {
-    fillColor: '#3388ff',
+    fillColor: 'transparent',
     weight: 1,
-    opacity: 0.6,
-    color: '#ffffff',
-    fillOpacity: 0.2,
+    opacity: 0.3,
+    color: '#666666',
+    fillOpacity: 0,
 };
 
 const hoverStyle = {
