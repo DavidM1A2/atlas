@@ -10,7 +10,7 @@ export default function WorldMap() {
             zoom={2}
             style={{ height: '100vh', width: '100%' }}
             minZoom={2}
-            maxBounds={[[-90, -180], [90, 180]]}
+            worldCopyJump={true}
         >
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
