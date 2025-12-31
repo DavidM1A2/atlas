@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import "./globals.css";
 import React from "react";
+import 'leaflet/dist/leaflet.css';
 
 export const metadata: Metadata = {
     title: "ATLAS",
