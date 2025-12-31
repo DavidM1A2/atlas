@@ -24,19 +24,19 @@ const defaultStyle = {
 };
 
 const hoverStyle = {
-    fillColor: '#3388ff',
-    weight: 2,
+    fillColor: 'transparent',
+    weight: 3,
     opacity: 1,
-    color: '#ffffff',
-    fillOpacity: 0.4,
+    color: '#3388ff',
+    fillOpacity: 0,
 };
 
 const selectedStyle = {
-    fillColor: '#ff7800',
-    weight: 2,
+    fillColor: 'transparent',
+    weight: 3,
     opacity: 1,
-    color: '#ffffff',
-    fillOpacity: 0.5,
+    color: '#ff7800',
+    fillOpacity: 0,
 };
 
 const subscribe = () => () => {};
