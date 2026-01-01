@@ -56,10 +56,8 @@ export default function OverviewTab({ data, canEdit, onUpdate, onNestedUpdate }:
             <div className={styles.section}>
                 <div className={styles.sectionTitle}>Alternative Names</div>
                 {data.alternativeNames.endonyms.length > 0 && (
-                    <div style={{ marginBottom: '8px' }}>
-                        <span className={styles.sectionTitle} style={{ fontSize: '0.7rem' }}>
-                            Endonyms
-                        </span>
+                    <div className={styles.nameSection}>
+                        <span className={styles.subsectionTitle}>Endonyms</span>
                         <div className={styles.tagList}>
                             {data.alternativeNames.endonyms.map((name, i) => (
                                 <span key={i} className={styles.tag}>
@@ -70,10 +68,8 @@ export default function OverviewTab({ data, canEdit, onUpdate, onNestedUpdate }:
                     </div>
                 )}
                 {data.alternativeNames.exonyms.length > 0 && (
-                    <div style={{ marginBottom: '8px' }}>
-                        <span className={styles.sectionTitle} style={{ fontSize: '0.7rem' }}>
-                            Exonyms
-                        </span>
+                    <div className={styles.nameSection}>
+                        <span className={styles.subsectionTitle}>Exonyms</span>
                         <div className={styles.tagList}>
                             {data.alternativeNames.exonyms.map((name, i) => (
                                 <span key={i} className={styles.tag}>
@@ -85,9 +81,7 @@ export default function OverviewTab({ data, canEdit, onUpdate, onNestedUpdate }:
                 )}
                 {data.alternativeNames.dialects.length > 0 && (
                     <div>
-                        <span className={styles.sectionTitle} style={{ fontSize: '0.7rem' }}>
-                            Dialects
-                        </span>
+                        <span className={styles.subsectionTitle}>Dialects</span>
                         <div className={styles.tagList}>
                             {data.alternativeNames.dialects.map((name, i) => (
                                 <span key={i} className={styles.tag}>

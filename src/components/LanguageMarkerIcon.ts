@@ -23,7 +23,3 @@ export function createLanguageMarkerIcon(color: string, selected: boolean = fals
         popupAnchor: [0, -8],
     });
 }
-
-// Default icons for backward compatibility
-export const languageMarkerIcon = createLanguageMarkerIcon('#16a34a', false);
-export const languageMarkerIconSelected = createLanguageMarkerIcon('#16a34a', true);

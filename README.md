@@ -12,6 +12,7 @@ ATLAS displays a full-screen, interactive world map that users can pan and zoom.
 - **Selectable Countries** - Click on any country to select it with border-style highlighting
 - **Country Info Pane** - View country details including statistics in a tabbed interface (Overview, Vitality, Church, Resources, Notes)
 - **Language Group Markers** - Visual markers for language groups with role-based editing capabilities
+- **Color-Coded Map Markers** - Dynamic marker colors based on selected metrics (EGIDS, Church Presence, Language Shift Risk) with multi-metric support
 - **Multi-Filter Panel** - Filter ethnolinguistic data by various criteria
 - **Map Tile Selector** - Switch between map tile providers with preference persistence
 - **User Authentication** - Login system with role-based access (Admin, Editor, Field Worker, Viewer)
@@ -55,6 +56,7 @@ src/
 │   ├── LanguageMarkers.tsx     # Language group map markers
 │   ├── LanguageGroupPane.tsx   # Language group detail panel
 │   ├── FilterPanel.tsx         # Multi-filter panel for data filtering
+│   ├── ColorCodingPanel.tsx    # Marker color coding by metrics
 │   ├── TileSelector.tsx        # Map tile provider selector
 │   ├── AuthHeader.tsx          # Login/logout buttons and user badge
 │   ├── LoginModal.tsx          # Login form modal
@@ -78,6 +80,7 @@ src/
 │   └── users.ts                # Mock user data
 ├── types/
 │   ├── auth.ts                 # Auth and user role types
+│   ├── colorCoding.ts          # Color coding metric types
 │   ├── country.ts              # Country type definitions
 │   ├── filters.ts              # Filter type definitions
 │   ├── languageGroup.ts        # Language group types
@@ -98,10 +101,11 @@ src/
 2. **Selection** - Clicking a country updates its border style and opens the info pane
 3. **Language Groups** - Markers display language group locations with popup details
 4. **Filtering** - The filter panel allows narrowing data by ethnolinguistic criteria
-5. **Performance** - Selection highlighting uses direct Leaflet API calls (no React re-renders)
-6. **State Sync** - Closing panels clears map selection via React effects
-7. **Authentication** - React Context manages login state with role-based permissions
-8. **Backend Service** - Unified service layer abstracts data operations
+5. **Color Coding** - Markers can be color-coded by metrics with support for combining multiple metrics
+6. **Performance** - Selection highlighting uses direct Leaflet API calls (no React re-renders)
+7. **State Sync** - Closing panels clears map selection via React effects
+8. **Authentication** - React Context manages login state with role-based permissions
+9. **Backend Service** - Unified service layer abstracts data operations
 
 ## Scripts
 

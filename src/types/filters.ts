@@ -40,18 +40,6 @@ export const DEFAULT_FILTERS: LanguageGroupFilters = {
     scriptureAccess: [],
 };
 
-export function hasActiveFilters(filters: LanguageGroupFilters): boolean {
-    return (
-        filters.churchStatus.length > 0 ||
-        filters.egidsVitality.length > 0 ||
-        filters.populationRange.length > 0 ||
-        filters.countries.length > 0 ||
-        filters.languageFamilies.length > 0 ||
-        filters.sourceReliability.length > 0 ||
-        filters.scriptureAccess.length > 0
-    );
-}
-
 export function countActiveFilters(filters: LanguageGroupFilters): number {
     return (
         filters.churchStatus.length +

@@ -240,3 +240,27 @@
     background-color: #c7d2fe;
     color: #3730a3;
 }
+
+.fieldLabel {
+    font-size: 0.875rem;
+    color: #6b7280;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.fieldWrapper {
+    margin-top: 12px;
+}
+
+.subsectionTitle {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.nameSection {
+    margin-bottom: 8px;
+}

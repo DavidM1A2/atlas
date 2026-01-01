@@ -1,25 +1,10 @@
 'use client';
 
 import EditableField from '../EditableField';
+import StatusBadge from '../StatusBadge';
 import { CHURCH_PRESENCE_OPTIONS } from '@/types/languageGroup';
-import type { ChurchPresence } from '@/types/languageGroup';
 import type { TabProps } from './types';
 import styles from '../LanguageGroupPane.module.css';
-
-function getChurchClass(presence: ChurchPresence): string {
-    switch (presence) {
-        case 'None':
-            return styles.churchNone;
-        case 'Emerging':
-            return styles.churchEmerging;
-        case 'Growing':
-            return styles.churchGrowing;
-        case 'Healthy Indigenous-Led':
-            return styles.churchHealthy;
-        default:
-            return '';
-    }
-}
 
 export default function ChurchTab({ data, canEdit, onUpdate }: TabProps) {
     const churchOptions = CHURCH_PRESENCE_OPTIONS.map((option) => ({
@@ -41,21 +26,8 @@ export default function ChurchTab({ data, canEdit, onUpdate }: TabProps) {
                 />
             ) : (
                 <div>
-                    <span
-                        style={{
-                            fontSize: '0.875rem',
-                            color: '#6b7280',
-                            display: 'block',
-                            marginBottom: '4px',
-                        }}
-                    >
-                        Status
-                    </span>
-                    <span
-                        className={`${styles.churchBadge} ${getChurchClass(data.churchPresence)}`}
-                    >
-                        {data.churchPresence}
-                    </span>
+                    <span className={styles.fieldLabel}>Status</span>
+                    <StatusBadge type="church" value={data.churchPresence} />
                 </div>
             )}
         </div>

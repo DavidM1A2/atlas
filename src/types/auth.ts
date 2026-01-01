@@ -1,4 +1,4 @@
-export type UserRole = 'Field Worker' | 'Admin' | 'Editor' | 'Viewer' | 'Default';
+export type UserRole = 'Field Worker' | 'Admin' | 'Editor' | 'Viewer';
 
 export interface User {
     username: string;
