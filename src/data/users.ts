@@ -16,15 +16,21 @@ export const testUsers: TestUser[] = [
         assignedCountries: undefined,
     },
     {
+        username: 'editor',
+        password: 'editor',
+        role: 'Editor',
+        assignedCountries: undefined,
+    },
+    {
         username: 'fieldworker',
         password: 'fieldworker',
         role: 'Field Worker',
-        assignedCountries: ['USA'],
+        assignedCountries: ['LAO'],
     },
     {
         username: 'viewer',
         password: 'viewer',
         role: 'Viewer',
-        assignedCountries: [],
+        assignedCountries: ['LAO'],
     },
 ];

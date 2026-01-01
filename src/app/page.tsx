@@ -17,6 +17,8 @@ import ColorLegend from '@/components/ColorLegend';
 import TileSelector from '@/components/TileSelector';
 import { tileOptions } from '@/data/tiles';
 import { filterLanguageGroups } from '@/utils/filterUtils';
+import { useAuth } from '@/context/AuthContext';
+import { canUseGlobalFilters } from '@/utils/permissions';
 
 const WorldMap = dynamic(() => import('@/components/WorldMap'), {
     ssr: false,
@@ -33,7 +35,9 @@ function getInitialTileId(): string {
 }
 
 export default function Home() {
+    const { user } = useAuth();
     const { languageGroups, getLanguageGroupWithEdits } = useLanguageGroups();
+    const showGlobalFilters = canUseGlobalFilters(user);
     const [panelState, setPanelState] = useState<PanelState>({ type: 'none' });
     const [selectedTileId, setSelectedTileId] = useState(getInitialTileId);
     const [filters, setFilters] = useState<LanguageGroupFilters>(DEFAULT_FILTERS);
@@ -96,13 +100,16 @@ export default function Home() {
                 onToggle={handleToggleFilterPanel}
                 isUserMenuOpen={openPanel === 'user'}
                 onUserMenuToggle={handleToggleUserMenu}
+                showFilters={showGlobalFilters}
             />
-            <ColorCodingPanel
-                colorCoding={colorCoding}
-                onColorCodingChange={setColorCoding}
-                isOpen={openPanel === 'colorCoding'}
-                onToggle={handleToggleColorCodingPanel}
-            />
+            {showGlobalFilters && (
+                <ColorCodingPanel
+                    colorCoding={colorCoding}
+                    onColorCodingChange={setColorCoding}
+                    isOpen={openPanel === 'colorCoding'}
+                    onToggle={handleToggleColorCodingPanel}
+                />
+            )}
             <WorldMap
                 selectedCountry={selectedCountry}
                 onCountrySelect={handleCountrySelect}
@@ -113,7 +120,7 @@ export default function Home() {
                 onLanguageGroupSelect={handleLanguageGroupSelect}
                 colorCoding={colorCoding}
             />
-            <ColorLegend selectedMetrics={colorCoding.selectedMetrics} />
+            {showGlobalFilters && <ColorLegend selectedMetrics={colorCoding.selectedMetrics} />}
             {panelState.type === 'country' && (
                 <CountryInfoPane country={panelState.data} onClose={handleClosePane} />
             )}

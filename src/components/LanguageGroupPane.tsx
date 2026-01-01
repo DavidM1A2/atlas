@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { LanguageGroup } from '@/types/languageGroup';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguageGroups } from '@/context/LanguageGroupContext';
-import { canEditLanguageGroup } from '@/utils/permissions';
+import { canEditLanguageGroup, getAccessibleTabs } from '@/utils/permissions';
 import CloseButton from './CloseButton';
 import { OverviewTab, VitalityTab, ChurchTab, ResourcesTab, NotesTab } from './tabs';
 import styles from './LanguageGroupPane.module.css';
@@ -33,6 +33,7 @@ export default function LanguageGroupPane({
     const [activeTab, setActiveTab] = useState<TabId>('overview');
 
     const canEdit = canEditLanguageGroup(user, languageGroup);
+    const accessibleTabs = getAccessibleTabs(user, languageGroup);
     const currentData = getLanguageGroupWithEdits(languageGroup.id) || languageGroup;
 
     const handleUpdate = (field: string, value: unknown) => {
@@ -67,23 +68,25 @@ export default function LanguageGroupPane({
             </div>
 
             <div className={styles.tabs}>
-                {tabs.map((tab) => (
-                    <button
-                        key={tab.id}
-                        className={`${styles.tab} ${activeTab === tab.id ? styles.tabActive : ''}`}
-                        onClick={() => setActiveTab(tab.id)}
-                    >
-                        {tab.label}
-                    </button>
-                ))}
+                {tabs
+                    .filter((tab) => accessibleTabs.includes(tab.id))
+                    .map((tab) => (
+                        <button
+                            key={tab.id}
+                            className={`${styles.tab} ${activeTab === tab.id ? styles.tabActive : ''}`}
+                            onClick={() => setActiveTab(tab.id)}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
             </div>
 
             <div className={styles.content}>
                 {activeTab === 'overview' && <OverviewTab {...tabProps} />}
-                {activeTab === 'vitality' && <VitalityTab {...tabProps} />}
-                {activeTab === 'church' && <ChurchTab {...tabProps} />}
-                {activeTab === 'resources' && <ResourcesTab {...tabProps} />}
-                {activeTab === 'notes' && <NotesTab {...tabProps} />}
+                {activeTab === 'vitality' && accessibleTabs.includes('vitality') && <VitalityTab {...tabProps} />}
+                {activeTab === 'church' && accessibleTabs.includes('church') && <ChurchTab {...tabProps} />}
+                {activeTab === 'resources' && accessibleTabs.includes('resources') && <ResourcesTab {...tabProps} />}
+                {activeTab === 'notes' && accessibleTabs.includes('notes') && <NotesTab {...tabProps} />}
             </div>
 
             {canEdit && (

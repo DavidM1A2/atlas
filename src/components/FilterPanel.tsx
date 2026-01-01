@@ -25,6 +25,7 @@ interface FilterPanelProps {
     onToggle?: () => void;
     isUserMenuOpen?: boolean;
     onUserMenuToggle?: () => void;
+    showFilters?: boolean;
 }
 
 interface FilterSectionProps {
@@ -147,6 +148,7 @@ export default function FilterPanel({
     onToggle: controlledOnToggle,
     isUserMenuOpen: controlledIsUserMenuOpen,
     onUserMenuToggle: controlledOnUserMenuToggle,
+    showFilters: showFiltersEnabled = true,
 }: FilterPanelProps) {
     const { user, logout } = useAuth();
     const [showLoginModal, setShowLoginModal] = useState(false);
@@ -227,17 +229,19 @@ export default function FilterPanel({
                     </button>
                 )}
 
-                {/* Filter button */}
-                <button
-                    className={`${styles.iconButton} ${showFilters ? styles.iconButtonActive : ''}`}
-                    onClick={toggleFilters}
-                    title="Filters"
-                >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-                    </svg>
-                    {activeCount > 0 && <span className={styles.badge}>{activeCount}</span>}
-                </button>
+                {/* Filter button - only shown if filters are enabled */}
+                {showFiltersEnabled && (
+                    <button
+                        className={`${styles.iconButton} ${showFilters ? styles.iconButtonActive : ''}`}
+                        onClick={toggleFilters}
+                        title="Filters"
+                    >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                        </svg>
+                        {activeCount > 0 && <span className={styles.badge}>{activeCount}</span>}
+                    </button>
+                )}
             </div>
 
             {/* User dropdown */}
@@ -254,7 +258,7 @@ export default function FilterPanel({
             )}
 
             {/* Filter panel */}
-            {showFilters && (
+            {showFiltersEnabled && showFilters && (
                 <div className={styles.filterPanel}>
                     <div className={styles.filterHeader}>
                         <span className={styles.filterTitle}>Filters</span>
