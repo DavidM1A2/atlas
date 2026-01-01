@@ -60,6 +60,15 @@ export default function Home() {
         localStorage.setItem('selectedTileId', selectedTileId);
     }, [selectedTileId]);
 
+    // Reset filters and color coding when user logs out
+    useEffect(() => {
+        if (!user) {
+            setFilters(DEFAULT_FILTERS);
+            setColorCoding(DEFAULT_COLOR_CODING);
+            setOpenPanel(null);
+        }
+    }, [user]);
+
     const selectedTile = tileOptions.find((t) => t.id === selectedTileId) || tileOptions[0];
 
     // Apply filters to language groups
