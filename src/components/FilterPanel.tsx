@@ -23,6 +23,8 @@ interface FilterPanelProps {
     filteredCount: number;
     isOpen?: boolean;
     onToggle?: () => void;
+    isUserMenuOpen?: boolean;
+    onUserMenuToggle?: () => void;
 }
 
 interface FilterSectionProps {
@@ -143,15 +145,19 @@ export default function FilterPanel({
     filteredCount,
     isOpen: controlledIsOpen,
     onToggle: controlledOnToggle,
+    isUserMenuOpen: controlledIsUserMenuOpen,
+    onUserMenuToggle: controlledOnUserMenuToggle,
 }: FilterPanelProps) {
     const { user, logout } = useAuth();
     const [showLoginModal, setShowLoginModal] = useState(false);
-    const [showUserMenu, setShowUserMenu] = useState(false);
+    const [internalShowUserMenu, setInternalShowUserMenu] = useState(false);
     const [internalShowFilters, setInternalShowFilters] = useState(false);
 
     // Use controlled state if provided, otherwise use internal state
     const showFilters = controlledIsOpen ?? internalShowFilters;
     const toggleFilters = controlledOnToggle ?? (() => setInternalShowFilters(!internalShowFilters));
+    const showUserMenu = controlledIsUserMenuOpen ?? internalShowUserMenu;
+    const toggleUserMenu = controlledOnUserMenuToggle ?? (() => setInternalShowUserMenu(!internalShowUserMenu));
     const [openSections, setOpenSections] = useState<Record<string, boolean>>({
         church: false,
         egids: false,
@@ -203,7 +209,7 @@ export default function FilterPanel({
                 {user ? (
                     <button
                         className={styles.iconButton}
-                        onClick={() => setShowUserMenu(!showUserMenu)}
+                        onClick={toggleUserMenu}
                         title={user.username}
                     >
                         <span className={styles.userInitial}>{user.username[0].toUpperCase()}</span>
@@ -241,7 +247,7 @@ export default function FilterPanel({
                         <span className={styles.username}>{user.username}</span>
                         <span className={styles.userRole}>{user.role}</span>
                     </div>
-                    <button onClick={() => { logout(); setShowUserMenu(false); }} className={styles.menuButton}>
+                    <button onClick={() => { logout(); toggleUserMenu(); }} className={styles.menuButton}>
                         Logout
                     </button>
                 </div>

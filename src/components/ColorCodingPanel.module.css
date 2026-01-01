@@ -50,7 +50,7 @@
 .panel {
     position: fixed;
     left: 60px;
-    top: 108px;
+    top: 12px;
     width: 240px;
     background-color: white;
     border-radius: 8px;
@@ -106,7 +106,7 @@
     .panel {
         left: 12px;
         right: 12px;
-        top: 156px;
+        top: 60px;
         width: auto;
     }
 }

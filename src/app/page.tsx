@@ -38,7 +38,7 @@ export default function Home() {
     const [selectedTileId, setSelectedTileId] = useState(getInitialTileId);
     const [filters, setFilters] = useState<LanguageGroupFilters>(DEFAULT_FILTERS);
     const [colorCoding, setColorCoding] = useState<ColorCodingState>(DEFAULT_COLOR_CODING);
-    const [openPanel, setOpenPanel] = useState<'filter' | 'colorCoding' | null>(null);
+    const [openPanel, setOpenPanel] = useState<'filter' | 'colorCoding' | 'user' | null>(null);
 
     const handleToggleFilterPanel = useCallback(() => {
         setOpenPanel((prev) => (prev === 'filter' ? null : 'filter'));
@@ -46,6 +46,10 @@ export default function Home() {
 
     const handleToggleColorCodingPanel = useCallback(() => {
         setOpenPanel((prev) => (prev === 'colorCoding' ? null : 'colorCoding'));
+    }, []);
+
+    const handleToggleUserMenu = useCallback(() => {
+        setOpenPanel((prev) => (prev === 'user' ? null : 'user'));
     }, []);
 
     useEffect(() => {
@@ -90,6 +94,8 @@ export default function Home() {
                 filteredCount={filteredLanguageGroups.length}
                 isOpen={openPanel === 'filter'}
                 onToggle={handleToggleFilterPanel}
+                isUserMenuOpen={openPanel === 'user'}
+                onUserMenuToggle={handleToggleUserMenu}
             />
             <ColorCodingPanel
                 colorCoding={colorCoding}
