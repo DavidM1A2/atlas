@@ -6,6 +6,7 @@ import type { Path } from 'leaflet';
 import type { FeatureCollection, Geometry } from 'geojson';
 import type { Country, CountryProperties } from '@/types/country';
 import type { LanguageGroup } from '@/types/languageGroup';
+import type { ColorCodingState } from '@/types/colorCoding';
 import countriesData from '@/data/countries.json';
 import LanguageMarkers from './LanguageMarkers';
 import {
@@ -24,6 +25,7 @@ interface WorldMapProps {
     languageGroups: LanguageGroup[];
     selectedLanguageGroupId: string | null;
     onLanguageGroupSelect: (languageGroup: LanguageGroup) => void;
+    colorCoding: ColorCodingState;
 }
 
 const subscribe = () => () => {};
@@ -43,6 +45,7 @@ export default function WorldMap({
     languageGroups,
     selectedLanguageGroupId,
     onLanguageGroupSelect,
+    colorCoding,
 }: WorldMapProps) {
     const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
     const selectedLayerRef = useRef<LayerWithCountry | null>(null);
@@ -140,6 +143,7 @@ export default function WorldMap({
                 languageGroups={languageGroups}
                 selectedId={selectedLanguageGroupId}
                 onMarkerClick={onLanguageGroupSelect}
+                colorCoding={colorCoding}
             />
         </MapContainer>
     );

@@ -6,10 +6,14 @@ import type { Country } from '@/types/country';
 import type { LanguageGroup } from '@/types/languageGroup';
 import type { LanguageGroupFilters } from '@/types/filters';
 import { DEFAULT_FILTERS } from '@/types/filters';
+import type { ColorCodingState } from '@/types/colorCoding';
+import { DEFAULT_COLOR_CODING } from '@/types/colorCoding';
 import { useLanguageGroups } from '@/context/LanguageGroupContext';
 import CountryInfoPane from '@/components/CountryInfoPane';
 import LanguageGroupPane from '@/components/LanguageGroupPane';
 import FilterPanel from '@/components/FilterPanel';
+import ColorCodingPanel from '@/components/ColorCodingPanel';
+import ColorLegend from '@/components/ColorLegend';
 import TileSelector from '@/components/TileSelector';
 import { tileOptions } from '@/data/tiles';
 import { filterLanguageGroups } from '@/utils/filterUtils';
@@ -33,6 +37,16 @@ export default function Home() {
     const [panelState, setPanelState] = useState<PanelState>({ type: 'none' });
     const [selectedTileId, setSelectedTileId] = useState(getInitialTileId);
     const [filters, setFilters] = useState<LanguageGroupFilters>(DEFAULT_FILTERS);
+    const [colorCoding, setColorCoding] = useState<ColorCodingState>(DEFAULT_COLOR_CODING);
+    const [openPanel, setOpenPanel] = useState<'filter' | 'colorCoding' | null>(null);
+
+    const handleToggleFilterPanel = useCallback(() => {
+        setOpenPanel((prev) => (prev === 'filter' ? null : 'filter'));
+    }, []);
+
+    const handleToggleColorCodingPanel = useCallback(() => {
+        setOpenPanel((prev) => (prev === 'colorCoding' ? null : 'colorCoding'));
+    }, []);
 
     useEffect(() => {
         localStorage.setItem('selectedTileId', selectedTileId);
@@ -74,6 +88,14 @@ export default function Home() {
                 filters={filters}
                 onFiltersChange={setFilters}
                 filteredCount={filteredLanguageGroups.length}
+                isOpen={openPanel === 'filter'}
+                onToggle={handleToggleFilterPanel}
+            />
+            <ColorCodingPanel
+                colorCoding={colorCoding}
+                onColorCodingChange={setColorCoding}
+                isOpen={openPanel === 'colorCoding'}
+                onToggle={handleToggleColorCodingPanel}
             />
             <WorldMap
                 selectedCountry={selectedCountry}
@@ -83,7 +105,9 @@ export default function Home() {
                 languageGroups={filteredLanguageGroups}
                 selectedLanguageGroupId={selectedLanguageGroupId}
                 onLanguageGroupSelect={handleLanguageGroupSelect}
+                colorCoding={colorCoding}
             />
+            <ColorLegend selectedMetrics={colorCoding.selectedMetrics} />
             {panelState.type === 'country' && (
                 <CountryInfoPane country={panelState.data} onClose={handleClosePane} />
             )}

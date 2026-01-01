@@ -1,0 +1,112 @@
+.toggleButton {
+    position: fixed;
+    left: 12px;
+    top: 108px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    color: #374151;
+    z-index: 1001;
+    transition: all 0.2s;
+}
+
+.toggleButton:hover {
+    background-color: #f3f4f6;
+}
+
+.toggleButtonActive {
+    background-color: #10b981;
+    color: white;
+}
+
+.toggleButtonActive:hover {
+    background-color: #059669;
+}
+
+.badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: white;
+    background-color: #10b981;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel {
+    position: fixed;
+    left: 60px;
+    top: 108px;
+    width: 240px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+}
+
+.header {
+    padding: 12px 14px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.content {
+    padding: 10px 14px;
+}
+
+.description {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+}
+
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 0.8125rem;
+    color: #4b5563;
+    cursor: pointer;
+}
+
+.checkboxLabel:hover {
+    color: #1f2937;
+}
+
+.checkbox {
+    width: 14px;
+    height: 14px;
+    accent-color: #10b981;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+    .panel {
+        left: 12px;
+        right: 12px;
+        top: 156px;
+        width: auto;
+    }
+}
