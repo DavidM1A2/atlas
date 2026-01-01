@@ -1,15 +1,18 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import type { Country } from '@/types/country';
 import type { LanguageGroup } from '@/types/languageGroup';
+import type { LanguageGroupFilters } from '@/types/filters';
+import { DEFAULT_FILTERS } from '@/types/filters';
 import { useLanguageGroups } from '@/context/LanguageGroupContext';
 import CountryInfoPane from '@/components/CountryInfoPane';
 import LanguageGroupPane from '@/components/LanguageGroupPane';
-import AuthHeader from '@/components/AuthHeader';
+import FilterPanel from '@/components/FilterPanel';
 import TileSelector from '@/components/TileSelector';
 import { tileOptions } from '@/data/tiles';
+import { filterLanguageGroups } from '@/utils/filterUtils';
 
 const WorldMap = dynamic(() => import('@/components/WorldMap'), {
     ssr: false,
@@ -29,12 +32,19 @@ export default function Home() {
     const { languageGroups, getLanguageGroupWithEdits } = useLanguageGroups();
     const [panelState, setPanelState] = useState<PanelState>({ type: 'none' });
     const [selectedTileId, setSelectedTileId] = useState(getInitialTileId);
+    const [filters, setFilters] = useState<LanguageGroupFilters>(DEFAULT_FILTERS);
 
     useEffect(() => {
         localStorage.setItem('selectedTileId', selectedTileId);
     }, [selectedTileId]);
 
     const selectedTile = tileOptions.find((t) => t.id === selectedTileId) || tileOptions[0];
+
+    // Apply filters to language groups
+    const filteredLanguageGroups = useMemo(
+        () => filterLanguageGroups(languageGroups, filters),
+        [languageGroups, filters]
+    );
 
     const handleCountrySelect = useCallback((country: Country) => {
         setPanelState({ type: 'country', data: country });
@@ -58,14 +68,19 @@ export default function Home() {
 
     return (
         <>
-            <AuthHeader />
             <TileSelector selectedTile={selectedTileId} onTileChange={setSelectedTileId} />
+            <FilterPanel
+                languageGroups={languageGroups}
+                filters={filters}
+                onFiltersChange={setFilters}
+                filteredCount={filteredLanguageGroups.length}
+            />
             <WorldMap
                 selectedCountry={selectedCountry}
                 onCountrySelect={handleCountrySelect}
                 tileUrl={selectedTile.url}
                 tileAttribution={selectedTile.attribution}
-                languageGroups={languageGroups}
+                languageGroups={filteredLanguageGroups}
                 selectedLanguageGroupId={selectedLanguageGroupId}
                 onLanguageGroupSelect={handleLanguageGroupSelect}
             />
