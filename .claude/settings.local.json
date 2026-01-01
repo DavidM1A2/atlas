@@ -4,9 +4,11 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
+      "Bash(git log:*)",
       "Bash(npm run build:*)",
       "Bash(npm run lint)",
-      "Bash(git -C \"C:\\\\Users\\\\Slovi\\\\IdeaProjects\\\\atlas\" diff)"
+      "Bash(tree:*)",
+      "Bash(cat:*)"
     ]
   }
 }
