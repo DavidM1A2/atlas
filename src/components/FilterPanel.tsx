@@ -251,6 +251,14 @@ export default function FilterPanel({
                         <span className={styles.username}>{user.username}</span>
                         <span className={styles.userRole}>{user.role}</span>
                     </div>
+                    <div className={styles.userRegions}>
+                        <span className={styles.regionsLabel}>Assigned regions:</span>
+                        <span className={styles.regionsList}>
+                            {user.assignedCountries && user.assignedCountries.length > 0
+                                ? user.assignedCountries.map((code) => getCountryName(code)).join(', ')
+                                : 'All regions'}
+                        </span>
+                    </div>
                     <button onClick={() => { logout(); toggleUserMenu(); }} className={styles.menuButton}>
                         Logout
                     </button>

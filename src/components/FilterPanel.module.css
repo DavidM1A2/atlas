@@ -104,6 +104,25 @@
     width: fit-content;
 }
 
+.userRegions {
+    padding: 10px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.regionsLabel {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.regionsList {
+    font-size: 0.8125rem;
+    color: #111827;
+    font-weight: 500;
+}
+
 .menuButton {
     width: 100%;
     padding: 12px 16px;
