@@ -1,31 +1,40 @@
 import type { LanguageGroup } from '@/types/languageGroup';
 import type { ColorMetric } from '@/types/colorCoding';
 
-/**
- * Calculate composite score for color coding
- * Currently returns null since no metrics are available
- */
+// Score mapping: 0 = needs attention (red), 1 = doing well (green)
+
+export function getPopulationScore(population: number): number {
+    if (population >= 50000) return 1;
+    if (population >= 20000) return 0.67;
+    if (population >= 10000) return 0.33;
+    return 0;
+}
+
 export function calculateCompositeScore(
-    _group: LanguageGroup,
+    group: LanguageGroup,
     selectedMetrics: ColorMetric[]
 ): number | null {
     if (selectedMetrics.length === 0) return null;
-    // No metrics available with simplified data model
-    return null;
+
+    let totalScore = 0;
+    for (const metric of selectedMetrics) {
+        switch (metric) {
+            case 'population':
+                totalScore += getPopulationScore(group.population);
+                break;
+        }
+    }
+
+    return totalScore / selectedMetrics.length;
 }
 
-/**
- * Convert score (0-1) to color
- */
 export function scoreToColor(score: number): string {
     // Red (0) -> Yellow (0.5) -> Green (1)
+    // HSL: Hue 0 = red, 60 = yellow, 120 = green
     const hue = score * 120;
     return `hsl(${hue}, 70%, 45%)`;
 }
 
-/**
- * Get marker color for a language group based on selected metrics
- */
 export function getMarkerColor(
     group: LanguageGroup,
     selectedMetrics: ColorMetric[]

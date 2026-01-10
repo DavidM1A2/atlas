@@ -22,6 +22,7 @@ export async function GET() {
             .map((record) => {
                 const name = record.get('ppl_grp') as string | undefined;
                 const coordinateString = record.get('Coordinates') as string | undefined;
+                const population = record.get('exact_population') as number | undefined;
 
                 if (!name) return null;
 
@@ -39,6 +40,7 @@ export async function GET() {
                     id: record.id,
                     name,
                     coordinates,
+                    population: population ?? 0,
                 };
             })
             .filter((lg): lg is LanguageGroup => lg !== null);

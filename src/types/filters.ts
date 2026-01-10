@@ -1,10 +1,15 @@
-// Filters for language groups (currently minimal since data model is simplified)
+// Population range options for filtering
+export const POPULATION_RANGES = ['<10k', '10-20k', '20-50k', '50k+'] as const;
+export type PopulationRange = (typeof POPULATION_RANGES)[number];
+
 export interface LanguageGroupFilters {
-    // Empty for now - will be expanded when more fields are added
+    populationRange: PopulationRange[];
 }
 
-export const DEFAULT_FILTERS: LanguageGroupFilters = {};
+export const DEFAULT_FILTERS: LanguageGroupFilters = {
+    populationRange: [],
+};
 
-export function countActiveFilters(_filters: LanguageGroupFilters): number {
-    return 0;
+export function countActiveFilters(filters: LanguageGroupFilters): number {
+    return filters.populationRange.length;
 }

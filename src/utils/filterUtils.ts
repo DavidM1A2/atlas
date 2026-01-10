@@ -1,13 +1,34 @@
 import type { LanguageGroup } from '@/types/languageGroup';
-import type { LanguageGroupFilters } from '@/types/filters';
+import type { LanguageGroupFilters, PopulationRange } from '@/types/filters';
+
+/**
+ * Get population range label for a given population
+ */
+export function getPopulationRange(population: number): PopulationRange {
+    if (population < 10000) return '<10k';
+    if (population < 20000) return '10-20k';
+    if (population < 50000) return '20-50k';
+    return '50k+';
+}
 
 /**
  * Filter language groups based on active filters
- * Currently returns all groups since the data model has been simplified
+ * A group must match ALL filter categories to be included
+ * Within a category, matching ANY selected value is sufficient
  */
 export function filterLanguageGroups(
     groups: LanguageGroup[],
-    _filters: LanguageGroupFilters
+    filters: LanguageGroupFilters
 ): LanguageGroup[] {
-    return groups;
+    return groups.filter((group) => {
+        // Population range filter
+        if (filters.populationRange.length > 0) {
+            const groupRange = getPopulationRange(group.population);
+            if (!filters.populationRange.includes(groupRange)) {
+                return false;
+            }
+        }
+
+        return true;
+    });
 }

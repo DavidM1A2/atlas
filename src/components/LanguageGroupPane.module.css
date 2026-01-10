@@ -105,6 +105,11 @@
     margin-bottom: 10px;
 }
 
+.value {
+    font-size: 0.875rem;
+    color: #111827;
+}
+
 .tagList {
     display: flex;
     flex-wrap: wrap;

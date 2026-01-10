@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import type { LanguageGroup } from '@/types/languageGroup';
-import type { LanguageGroupFilters } from '@/types/filters';
-import { countActiveFilters } from '@/types/filters';
+import type { LanguageGroupFilters, PopulationRange } from '@/types/filters';
+import { POPULATION_RANGES, DEFAULT_FILTERS, countActiveFilters } from '@/types/filters';
 import { useAuth } from '@/context/AuthContext';
 import LoginModal from './LoginModal';
 import styles from './FilterPanel.module.css';
@@ -20,8 +20,51 @@ interface FilterPanelProps {
     showFilters?: boolean;
 }
 
+interface FilterSectionProps {
+    title: string;
+    isOpen: boolean;
+    onToggle: () => void;
+    children: React.ReactNode;
+}
+
+function FilterSection({ title, isOpen, onToggle, children }: FilterSectionProps) {
+    return (
+        <div className={styles.section}>
+            <button className={styles.sectionHeader} onClick={onToggle}>
+                <span>{title}</span>
+                <span className={styles.chevron}>{isOpen ? '−' : '+'}</span>
+            </button>
+            {isOpen && <div className={styles.sectionContent}>{children}</div>}
+        </div>
+    );
+}
+
+function CheckboxOption({
+    label,
+    checked,
+    onChange,
+}: {
+    label: string;
+    checked: boolean;
+    onChange: (checked: boolean) => void;
+}) {
+    return (
+        <label className={styles.checkboxLabel}>
+            <input
+                type="checkbox"
+                checked={checked}
+                onChange={(e) => onChange(e.target.checked)}
+                className={styles.checkbox}
+            />
+            <span>{label}</span>
+        </label>
+    );
+}
+
 export default function FilterPanel({
     languageGroups,
+    filters,
+    onFiltersChange,
     filteredCount,
     isOpen: controlledIsOpen,
     onToggle: controlledOnToggle,
@@ -39,8 +82,26 @@ export default function FilterPanel({
     const toggleFilters = controlledOnToggle ?? (() => setInternalShowFilters(!internalShowFilters));
     const showUserMenu = controlledIsUserMenuOpen ?? internalShowUserMenu;
     const toggleUserMenu = controlledOnUserMenuToggle ?? (() => setInternalShowUserMenu(!internalShowUserMenu));
+    const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+        population: false,
+    });
 
-    const activeCount = countActiveFilters({});
+    const activeCount = countActiveFilters(filters);
+
+    const toggleSection = (section: string) => {
+        setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
+    };
+
+    const handleClearAll = () => {
+        onFiltersChange(DEFAULT_FILTERS);
+    };
+
+    const togglePopulationFilter = (range: PopulationRange) => {
+        const newArray = filters.populationRange.includes(range)
+            ? filters.populationRange.filter((r) => r !== range)
+            : [...filters.populationRange, range];
+        onFiltersChange({ ...filters, populationRange: newArray });
+    };
 
     return (
         <>
@@ -96,7 +157,7 @@ export default function FilterPanel({
                 </div>
             )}
 
-            {/* Filter panel - currently empty since data model is simplified */}
+            {/* Filter panel */}
             {showFiltersEnabled && showFilters && (
                 <div className={styles.filterPanel}>
                     <div className={styles.filterHeader}>
@@ -105,11 +166,29 @@ export default function FilterPanel({
                             {filteredCount}/{languageGroups.length}
                         </span>
                     </div>
+
                     <div className={styles.sections}>
-                        <p className={styles.emptyMessage}>
-                            No filters available yet.
-                        </p>
+                        <FilterSection
+                            title="Population"
+                            isOpen={openSections.population}
+                            onToggle={() => toggleSection('population')}
+                        >
+                            {POPULATION_RANGES.map((range) => (
+                                <CheckboxOption
+                                    key={range}
+                                    label={range}
+                                    checked={filters.populationRange.includes(range)}
+                                    onChange={() => togglePopulationFilter(range)}
+                                />
+                            ))}
+                        </FilterSection>
                     </div>
+
+                    {activeCount > 0 && (
+                        <button className={styles.clearButton} onClick={handleClearAll}>
+                            Clear all
+                        </button>
+                    )}
                 </div>
             )}
 

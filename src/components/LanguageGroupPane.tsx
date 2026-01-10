@@ -21,6 +21,12 @@ export default function LanguageGroupPane({
             </div>
             <div className={styles.content}>
                 <div className={styles.section}>
+                    <div className={styles.sectionTitle}>Population</div>
+                    <div className={styles.value}>
+                        {languageGroup.population.toLocaleString()}
+                    </div>
+                </div>
+                <div className={styles.section}>
                     <div className={styles.sectionTitle}>Location</div>
                     {languageGroup.coordinates.length > 0 ? (
                         <div className={styles.tagList}>
