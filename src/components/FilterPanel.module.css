@@ -249,6 +249,15 @@
     font-style: italic;
 }
 
+.emptyMessage {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    font-style: italic;
+    padding: 16px;
+    text-align: center;
+    margin: 0;
+}
+
 /* Checkbox Options */
 .checkboxLabel {
     display: flex;

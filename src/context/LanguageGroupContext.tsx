@@ -4,74 +4,58 @@ import {
     createContext,
     useContext,
     useState,
-    useCallback,
+    useEffect,
     useMemo,
     ReactNode,
 } from 'react';
 import type { LanguageGroup } from '@/types/languageGroup';
-import {
-    getAllLanguageGroups,
-    getLanguageGroupById,
-    applyLanguageGroupEdits,
-} from '@/utils/backendService';
-
-type LanguageGroupEdits = {
-    [languageGroupId: string]: Partial<LanguageGroup>;
-};
 
 interface LanguageGroupContextType {
     languageGroups: LanguageGroup[];
-    edits: LanguageGroupEdits;
-    updateLanguageGroup: (id: string, changes: Partial<LanguageGroup>) => void;
-    getLanguageGroupWithEdits: (id: string) => LanguageGroup | undefined;
-    clearEdits: () => void;
+    loading: boolean;
+    error: string | null;
+    getLanguageGroupById: (id: string) => LanguageGroup | undefined;
 }
 
 const LanguageGroupContext = createContext<LanguageGroupContextType | null>(null);
 
 export function LanguageGroupProvider({ children }: { children: ReactNode }) {
-    const [languageGroups] = useState<LanguageGroup[]>(() =>
-        getAllLanguageGroups()
-    );
+    const [languageGroups, setLanguageGroups] = useState<LanguageGroup[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    const [edits, setEdits] = useState<LanguageGroupEdits>({});
+    useEffect(() => {
+        async function fetchLanguageGroups() {
+            try {
+                const response = await fetch('/api/language-groups');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch language groups');
+                }
+                const data = await response.json();
+                setLanguageGroups(data.languageGroups);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'An error occurred');
+            } finally {
+                setLoading(false);
+            }
+        }
 
-    const updateLanguageGroup = useCallback(
-        (id: string, changes: Partial<LanguageGroup>) => {
-            setEdits((prev) => ({
-                ...prev,
-                [id]: { ...prev[id], ...changes },
-            }));
-        },
-        []
-    );
-
-    const getLanguageGroupWithEdits = useCallback(
-        (id: string): LanguageGroup | undefined => {
-            const base = getLanguageGroupById(id);
-            if (!base) return undefined;
-
-            const groupEdits = edits[id];
-            if (!groupEdits) return base;
-
-            return applyLanguageGroupEdits(base, groupEdits);
-        },
-        [edits]
-    );
-
-    const clearEdits = useCallback(() => {
-        setEdits({});
+        fetchLanguageGroups();
     }, []);
+
+    const getLanguageGroupById = useMemo(() => {
+        const map = new Map(languageGroups.map((lg) => [lg.id, lg]));
+        return (id: string) => map.get(id);
+    }, [languageGroups]);
 
     const value = useMemo(
         () => ({
             languageGroups,
-            edits,
-            updateLanguageGroup,
-            getLanguageGroupWithEdits,
-            clearEdits,
+            loading,
+            error,
+            getLanguageGroupById,
         }),
-        [languageGroups, edits, updateLanguageGroup, getLanguageGroupWithEdits, clearEdits]
+        [languageGroups, loading, error, getLanguageGroupById]
     );
 
     return (

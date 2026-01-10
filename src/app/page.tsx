@@ -36,7 +36,7 @@ function getInitialTileId(): string {
 
 export default function Home() {
     const { user } = useAuth();
-    const { languageGroups, getLanguageGroupWithEdits } = useLanguageGroups();
+    const { languageGroups } = useLanguageGroups();
     const showGlobalFilters = canUseGlobalFilters(user);
     const [panelState, setPanelState] = useState<PanelState>({ type: 'none' });
     const [selectedTileId, setSelectedTileId] = useState(getInitialTileId);
@@ -81,13 +81,9 @@ export default function Home() {
         setPanelState({ type: 'country', data: country });
     }, []);
 
-    const handleLanguageGroupSelect = useCallback(
-        (languageGroup: LanguageGroup) => {
-            const withEdits = getLanguageGroupWithEdits(languageGroup.id);
-            setPanelState({ type: 'languageGroup', data: withEdits || languageGroup });
-        },
-        [getLanguageGroupWithEdits]
-    );
+    const handleLanguageGroupSelect = useCallback((languageGroup: LanguageGroup) => {
+        setPanelState({ type: 'languageGroup', data: languageGroup });
+    }, []);
 
     const handleClosePane = useCallback(() => {
         setPanelState({ type: 'none' });

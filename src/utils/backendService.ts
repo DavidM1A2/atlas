@@ -1,29 +1,5 @@
-import type { LanguageGroup } from '@/types/languageGroup';
 import type { Country } from '@/types/country';
-import { mockLanguageGroups } from '@/data/languageGroups';
 import { mockCountryData } from '@/data/countryData';
-import { enrichLanguageGroupsWithCountry } from '@/utils/countryDetection';
-
-// ============================================================================
-// Language Groups
-// ============================================================================
-
-const enrichedLanguageGroups = enrichLanguageGroupsWithCountry(mockLanguageGroups);
-
-export function getAllLanguageGroups(): LanguageGroup[] {
-    return enrichedLanguageGroups;
-}
-
-export function getLanguageGroupById(id: string): LanguageGroup | undefined {
-    return enrichedLanguageGroups.find((lg) => lg.id === id);
-}
-
-export function applyLanguageGroupEdits(
-    languageGroup: LanguageGroup,
-    edits: Partial<LanguageGroup>
-): LanguageGroup {
-    return { ...languageGroup, ...edits };
-}
 
 // ============================================================================
 // Countries
