@@ -60,9 +60,10 @@ export default function Home() {
         localStorage.setItem('selectedTileId', selectedTileId);
     }, [selectedTileId]);
 
-    // Reset filters and color coding when user logs out
+    // Reset state when user logs out
     useEffect(() => {
         if (!user) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setFilters(DEFAULT_FILTERS);
             setColorCoding(DEFAULT_COLOR_CODING);
             setOpenPanel(null);
