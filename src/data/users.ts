@@ -1,3 +1,4 @@
+import 'server-only';
 import type { UserRole } from '@/types/auth';
 
 // TODO: Replace with API call to backend

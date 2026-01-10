@@ -1,3 +1,4 @@
+import 'server-only';
 import type { User } from '@/types/auth';
 
 // In-memory session store
