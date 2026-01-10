@@ -168,20 +168,26 @@ export default function FilterPanel({
                     </div>
 
                     <div className={styles.sections}>
-                        <FilterSection
-                            title="Population"
-                            isOpen={openSections.population}
-                            onToggle={() => toggleSection('population')}
-                        >
-                            {POPULATION_RANGES.map((range) => (
-                                <CheckboxOption
-                                    key={range}
-                                    label={range}
-                                    checked={filters.populationRange.includes(range)}
-                                    onChange={() => togglePopulationFilter(range)}
-                                />
-                            ))}
-                        </FilterSection>
+                        {user ? (
+                            <FilterSection
+                                title="Population"
+                                isOpen={openSections.population}
+                                onToggle={() => toggleSection('population')}
+                            >
+                                {POPULATION_RANGES.map((range) => (
+                                    <CheckboxOption
+                                        key={range}
+                                        label={range}
+                                        checked={filters.populationRange.includes(range)}
+                                        onChange={() => togglePopulationFilter(range)}
+                                    />
+                                ))}
+                            </FilterSection>
+                        ) : (
+                            <p className={styles.emptyMessage}>
+                                Log in to access filters.
+                            </p>
+                        )}
                     </div>
 
                     {activeCount > 0 && (

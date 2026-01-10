@@ -20,11 +20,17 @@ export default function LanguageGroupPane({
                 <CloseButton onClick={onClose} />
             </div>
             <div className={styles.content}>
-                <div className={styles.section}>
-                    <div className={styles.sectionTitle}>Population</div>
-                    <div className={styles.value}>
-                        {languageGroup.population.toLocaleString()}
+                {languageGroup.population !== undefined && (
+                    <div className={styles.section}>
+                        <div className={styles.sectionTitle}>Population</div>
+                        <div className={styles.value}>
+                            {languageGroup.population.toLocaleString()}
+                        </div>
                     </div>
+                )}
+                <div className={styles.section}>
+                    <div className={styles.sectionTitle}>Country</div>
+                    <div className={styles.value}>{languageGroup.country}</div>
                 </div>
                 <div className={styles.section}>
                     <div className={styles.sectionTitle}>Location</div>

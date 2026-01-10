@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import Airtable from 'airtable';
 import type { LanguageGroup } from '@/types/languageGroup';
 import { parseCoordinates } from '@/utils/coordinateParser';
@@ -6,12 +6,22 @@ import { parseCoordinates } from '@/utils/coordinateParser';
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
 
-export async function GET() {
+export async function GET(request: NextRequest) {
     if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
         return NextResponse.json(
             { error: 'Airtable configuration missing' },
             { status: 500 }
         );
+    }
+
+    // Check authentication
+    const authHeader = request.headers.get('Authorization');
+    let isAuthenticated = false;
+
+    if (authHeader?.startsWith('Bearer ')) {
+        const accessToken = authHeader.slice(7);
+        // Gross hack, just for demo purposes
+        isAuthenticated = accessToken !== null;
     }
 
     try {
@@ -28,20 +38,20 @@ export async function GET() {
 
                 const coordinates = parseCoordinates(coordinateString);
 
-                if (coordinates.length === 0) {
-                    if (!coordinateString || !coordinateString.trim()) {
-                        console.warn(`[${record.id}] "${name}": No coordinates provided`);
-                    } else {
-                        console.warn(`[${record.id}] "${name}": Failed to parse coordinates: "${coordinateString}"`);
-                    }
-                }
-
-                return {
+                // Base data always returned
+                const baseData: LanguageGroup = {
                     id: record.id,
                     name,
                     coordinates,
-                    population: population ?? 0,
+                    country: 'Laos', // All data in this Airtable base is Laos
                 };
+
+                // Only include population for authenticated users
+                if (isAuthenticated) {
+                    baseData.population = population ?? 0;
+                }
+
+                return baseData;
             })
             .filter((lg): lg is LanguageGroup => lg !== null);
 

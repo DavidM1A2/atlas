@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { deleteSession } from '@/utils/sessionStore';
 
 export async function POST(request: NextRequest) {
     const authHeader = request.headers.get('Authorization');
@@ -11,8 +10,8 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    const token = authHeader.slice(7); // Remove 'Bearer ' prefix
-    deleteSession(token);
+    const accessToken = authHeader.slice(7); // Remove 'Bearer ' prefix
+    // No-op for now
 
     return NextResponse.json({ success: true });
 }

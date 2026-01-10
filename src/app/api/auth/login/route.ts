@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { testUsers } from '@/data/users';
-import { createSession } from '@/utils/sessionStore';
 
 export async function POST(request: NextRequest) {
     try {
@@ -31,11 +30,11 @@ export async function POST(request: NextRequest) {
             assignedCountries: matchedUser.assignedCountries,
         };
 
-        const token = createSession(user);
+        const accessToken = crypto.randomUUID();
 
         // Response mimics Cognito's token response structure
         return NextResponse.json({
-            accessToken: token,
+            accessToken: accessToken,
             user,
         });
     } catch {

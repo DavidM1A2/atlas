@@ -9,28 +9,31 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
+    const [token, setToken] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     // On mount, check for existing token and validate it
     useEffect(() => {
-        const token = localStorage.getItem(TOKEN_KEY);
-        if (!token) {
+        const storedToken = localStorage.getItem(TOKEN_KEY);
+        if (!storedToken) {
             setIsLoading(false);
             return;
         }
 
         fetch('/api/auth/me', {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${storedToken}` },
         })
             .then((res) => {
                 if (res.ok) return res.json();
                 throw new Error('Invalid token');
             })
             .then((data) => {
+                setToken(storedToken);
                 setUser(data.user);
             })
             .catch(() => {
                 localStorage.removeItem(TOKEN_KEY);
+                setToken(null);
             })
             .finally(() => {
                 setIsLoading(false);
@@ -51,6 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             const data = await res.json();
             localStorage.setItem(TOKEN_KEY, data.accessToken);
+            setToken(data.accessToken);
             setUser(data.user);
             return true;
         } catch {
@@ -59,21 +63,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const logout = useCallback(async (): Promise<void> => {
-        const token = localStorage.getItem(TOKEN_KEY);
-        if (token) {
+        const storedToken = localStorage.getItem(TOKEN_KEY);
+        if (storedToken) {
             await fetch('/api/auth/logout', {
                 method: 'POST',
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${storedToken}` },
             }).catch(() => {
                 // Ignore errors - we're logging out anyway
             });
         }
         localStorage.removeItem(TOKEN_KEY);
+        setToken(null);
         setUser(null);
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+        <AuthContext.Provider value={{ user, token, isLoading, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

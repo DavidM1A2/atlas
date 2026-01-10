@@ -17,15 +17,21 @@ export function calculateCompositeScore(
     if (selectedMetrics.length === 0) return null;
 
     let totalScore = 0;
+    let validMetrics = 0;
+
     for (const metric of selectedMetrics) {
         switch (metric) {
             case 'population':
-                totalScore += getPopulationScore(group.population);
+                if (group.population !== undefined) {
+                    totalScore += getPopulationScore(group.population);
+                    validMetrics++;
+                }
                 break;
         }
     }
 
-    return totalScore / selectedMetrics.length;
+    if (validMetrics === 0) return null;
+    return totalScore / validMetrics;
 }
 
 export function scoreToColor(score: number): string {
