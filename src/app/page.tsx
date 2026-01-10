@@ -66,6 +66,7 @@ export default function Home() {
             setFilters(DEFAULT_FILTERS);
             setColorCoding(DEFAULT_COLOR_CODING);
             setOpenPanel(null);
+            setPanelState({ type: 'none' });
         }
     }, [user]);
 
