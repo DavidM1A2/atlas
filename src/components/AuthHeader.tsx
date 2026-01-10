@@ -6,8 +6,19 @@ import LoginModal from './LoginModal';
 import styles from './AuthHeader.module.css';
 
 export default function AuthHeader() {
-    const { user, logout } = useAuth();
+    const { user, isLoading, logout } = useAuth();
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+    const handleLogout = async () => {
+        setIsLoggingOut(true);
+        await logout();
+        setIsLoggingOut(false);
+    };
+
+    if (isLoading) {
+        return <div className={styles.header} />;
+    }
 
     return (
         <>
@@ -18,8 +29,8 @@ export default function AuthHeader() {
                             <span className={styles.username}>{user.username}</span>
                             <span className={styles.role}>{user.role}</span>
                         </div>
-                        <button onClick={logout} className={styles.button}>
-                            Logout
+                        <button onClick={handleLogout} className={styles.button} disabled={isLoggingOut}>
+                            {isLoggingOut ? 'Logging out...' : 'Logout'}
                         </button>
                     </>
                 ) : (

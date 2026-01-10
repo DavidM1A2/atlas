@@ -8,6 +8,7 @@ export interface User {
 
 export interface AuthContextType {
     user: User | null;
-    login: (username: string, password: string) => boolean;
-    logout: () => void;
+    isLoading: boolean;
+    login: (username: string, password: string) => Promise<boolean>;
+    logout: () => Promise<void>;
 }

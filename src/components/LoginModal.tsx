@@ -14,16 +14,22 @@ export default function LoginModal({ onClose }: LoginModalProps) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError('');
+        setIsSubmitting(true);
 
-        const success = login(username, password);
-        if (success) {
-            onClose();
-        } else {
-            setError('Invalid username or password');
+        try {
+            const success = await login(username, password);
+            if (success) {
+                onClose();
+            } else {
+                setError('Invalid username or password');
+            }
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -60,8 +66,8 @@ export default function LoginModal({ onClose }: LoginModalProps) {
                         />
                     </div>
 
-                    <button type="submit" className={styles.submitButton}>
-                        Login
+                    <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+                        {isSubmitting ? 'Logging in...' : 'Login'}
                     </button>
                 </form>
             </div>

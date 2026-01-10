@@ -1,33 +1,8 @@
-import type { User } from '@/types/auth';
 import type { LanguageGroup } from '@/types/languageGroup';
 import type { Country } from '@/types/country';
-import { testUsers } from '@/data/users';
 import { mockLanguageGroups } from '@/data/languageGroups';
 import { mockCountryData } from '@/data/countryData';
 import { enrichLanguageGroupsWithCountry } from '@/utils/countryDetection';
-
-// ============================================================================
-// Authentication
-// ============================================================================
-
-export function authenticateUser(
-    username: string,
-    password: string
-): User | null {
-    const matchedUser = testUsers.find(
-        (u) => u.username === username && u.password === password
-    );
-
-    if (matchedUser) {
-        return {
-            username: matchedUser.username,
-            role: matchedUser.role,
-            assignedCountries: matchedUser.assignedCountries,
-        };
-    }
-
-    return null;
-}
 
 // ============================================================================
 // Language Groups
